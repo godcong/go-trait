@@ -1,4 +1,4 @@
-module go-trait
+module github.com/godcong/go-trait
 
 require (
 	github.com/godcong/elogrus v0.0.0-20190222071113-778ac7c5d538
