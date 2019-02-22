@@ -1,4 +1,4 @@
-package go_trait
+package trait
 
 import (
 	"github.com/godcong/elogrus"
@@ -27,6 +27,7 @@ func DefaultElasticLogOption(opt *ElasticLogOption) *ElasticLogOption {
 			},
 		}
 	}
+	return opt
 }
 
 func InitElasticLog(index string, opt *ElasticLogOption) {
