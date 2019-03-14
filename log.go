@@ -22,7 +22,7 @@ type ElasticLogOptions struct {
 }
 
 func InitElasticLog(index string, opts ...ElasticLogOption) {
-	opt := newElasticLogOption(opts)
+	opt := newElasticLogOption(opts...)
 	client, err := elastic.NewClient(opt.ClientOptions...)
 	if err != nil {
 		log.Panic(err)
@@ -58,7 +58,7 @@ const (
 
 // InitRotateLogger ...
 func InitRotateLog(logPath string, opts ...RotateLogOption) {
-	opt := newRotateLogOptions(opts)
+	opt := newRotateLogOptions(opts...)
 	dir, filename := filepath.Split(logPath)
 	_ = os.MkdirAll(dir, os.ModePerm)
 	writer, err := rotatelogs.New(

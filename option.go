@@ -9,7 +9,7 @@ import (
 type RotateLogOption func(opts *RotateLogOptions)
 type ElasticLogOption func(opts *ElasticLogOptions)
 
-func newRotateLogOptions(opts []RotateLogOption) *RotateLogOptions {
+func newRotateLogOptions(opts ...RotateLogOption) *RotateLogOptions {
 	opt := &RotateLogOptions{
 		Level:        RotateLogAll,
 		MaxAge:       30 * 24 * time.Hour, //log saved one month
@@ -40,7 +40,7 @@ func RotationTime(duration time.Duration) RotateLogOption {
 	}
 }
 
-func newElasticLogOption(opts []ElasticLogOption) *ElasticLogOptions {
+func newElasticLogOption(opts ...ElasticLogOption) *ElasticLogOptions {
 	opt := &ElasticLogOptions{
 		ReportCaller: true,
 		Formatter:    &log.JSONFormatter{},
