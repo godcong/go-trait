@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-type ElasticLogOption struct {
+type ElasticLogOptions struct {
 	ReportCaller  bool
 	Formatter     log.Formatter
 	Host          string
@@ -21,24 +21,8 @@ type ElasticLogOption struct {
 	ClientOptions []elastic.ClientOptionFunc
 }
 
-func DefaultElasticLogOption(opt *ElasticLogOption) *ElasticLogOption {
-	if opt == nil {
-		opt = &ElasticLogOption{
-			ReportCaller: true,
-			Formatter:    &log.JSONFormatter{},
-			Host:         "localhost",
-			Level:        log.TraceLevel,
-			ClientOptions: []elastic.ClientOptionFunc{
-				elastic.SetSniff(false),
-				elastic.SetURL("http://localhost:9200"),
-			},
-		}
-	}
-	return opt
-}
-
-func InitElasticLog(index string, opt *ElasticLogOption) {
-	opt = DefaultElasticLogOption(opt)
+func InitElasticLog(index string, opts ...ElasticLogOption) {
+	opt := newElasticLogOption(opts)
 	client, err := elastic.NewClient(opt.ClientOptions...)
 	if err != nil {
 		log.Panic(err)
@@ -54,7 +38,7 @@ func InitElasticLog(index string, opt *ElasticLogOption) {
 	log.SetFormatter(opt.Formatter)
 }
 
-type RotateLogOption struct {
+type RotateLogOptions struct {
 	Level        int           `json:"level"`
 	MaxAge       time.Duration `json:"max_age"`
 	RotationTime time.Duration `json:"rotation_time"`
@@ -73,8 +57,8 @@ const (
 )
 
 // InitRotateLogger ...
-func InitRotateLog(logPath string, opt *RotateLogOption) {
-	opt = DefaultRotateLogOption(opt)
+func InitRotateLog(logPath string, opts ...RotateLogOption) {
+	opt := newRotateLogOptions(opts)
 	dir, filename := filepath.Split(logPath)
 	_ = os.MkdirAll(dir, os.ModePerm)
 	writer, err := rotatelogs.New(
@@ -120,17 +104,6 @@ func InitRotateLog(logPath string, opt *RotateLogOption) {
 
 	log.SetReportCaller(true)
 	log.SetFormatter(&log.JSONFormatter{})
-}
-
-func DefaultRotateLogOption(opt *RotateLogOption) *RotateLogOption {
-	if opt == nil {
-		return &RotateLogOption{
-			Level:        RotateLogAll,
-			MaxAge:       30 * 24 * time.Hour, //log saved one month
-			RotationTime: 24 * time.Hour,
-		}
-	}
-	return opt
 }
 
 func NoOutput() {
