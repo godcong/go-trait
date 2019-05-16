@@ -52,7 +52,7 @@ func Fatal(args ...interface{}) {
 
 // Debugf uses fmt.Sprintf to log a templated message.
 func Debugf(template string, args ...interface{}) {
-	zapSugar.Debugf(args...)
+	zapSugar.Debugf(template, args...)
 }
 
 // Infof uses fmt.Sprintf to log a templated message.
