@@ -13,4 +13,6 @@ require (
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.3.0
 	github.com/tebeka/strftime v0.0.0-20140926081919-3f9c7761e312 // indirect
+	go.uber.org/multierr v1.1.0 // indirect
+	go.uber.org/zap v1.10.0
 )
