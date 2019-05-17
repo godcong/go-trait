@@ -14,6 +14,18 @@ func InitGlobalZapSugar() {
 	zapSugar = logger.Sugar()
 }
 
+func ZapSugar() *zap.SugaredLogger {
+	return zapSugar
+}
+
+func Zap() *zap.Logger {
+	logger, e := zap.NewProduction()
+	if e != nil {
+		return nil
+	}
+	return logger
+}
+
 // Info uses fmt.Sprint to construct and log a message.
 func Info(args ...interface{}) {
 	zapSugar.Info(args...)
