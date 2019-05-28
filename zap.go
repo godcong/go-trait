@@ -4,27 +4,34 @@ import (
 	"go.uber.org/zap"
 )
 
-var zapSugar = InitGlobalZapSugar()
+func init() {
+	logger, e := zap.NewProduction(
+		zap.AddCaller(),
+		zap.AddCallerSkip(1),
+	)
+	if e != nil {
+		panic(e)
+	}
+	zapSugar = logger.Sugar()
+}
 
-func InitGlobalZapSugar() *zap.SugaredLogger {
+func NewZapSugar(f ...zap.Field) *zap.SugaredLogger {
 	logger, e := zap.NewProduction()
 	if e != nil {
 		panic(e)
 	}
-	return logger.Sugar()
+	return logger.With(f...).Sugar()
 }
 
-func ZapSugar() *zap.SugaredLogger {
-	return zapSugar
-}
-
-func Zap() *zap.Logger {
+func NewZap() *zap.Logger {
 	logger, e := zap.NewProduction()
 	if e != nil {
 		return nil
 	}
 	return logger
 }
+
+var zapSugar *zap.SugaredLogger
 
 // Info uses fmt.Sprint to construct and log a message.
 func Info(args ...interface{}) {
