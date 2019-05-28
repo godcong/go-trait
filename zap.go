@@ -4,7 +4,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func InitGlobalZapSugar() *zap.SugaredLogger {
+func InitGlobalZapSugar() {
 	logger, e := zap.NewProduction(
 		zap.AddCaller(),
 		zap.AddCallerSkip(1),
@@ -13,7 +13,6 @@ func InitGlobalZapSugar() *zap.SugaredLogger {
 		panic(e)
 	}
 	zapSugar = logger.Sugar()
-	return zapSugar
 }
 
 func NewZapSugar(f ...zap.Field) *zap.SugaredLogger {
