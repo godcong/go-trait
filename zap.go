@@ -26,7 +26,7 @@ func NewZapSugar(f ...zap.Field) *zap.SugaredLogger {
 func NewZap() *zap.Logger {
 	logger, e := zap.NewProduction()
 	if e != nil {
-		return nil
+		panic(e)
 	}
 	return logger
 }
