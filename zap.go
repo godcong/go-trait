@@ -38,7 +38,7 @@ func NewZap() *zap.Logger {
 }
 
 // NewZapFile ...
-func NewZapFile(path ...string) (*zap.Logger, error) {
+func NewZapFile(path ...string) *zap.Logger {
 	cfg := zap.NewProductionConfig()
 	p, _ := os.Getwd()
 	p = filepath.Join(p, "zap.log")
@@ -49,7 +49,16 @@ func NewZapFile(path ...string) (*zap.Logger, error) {
 		p,
 	}
 
-	return cfg.Build()
+	log, e := cfg.Build()
+	if e != nil {
+		panic(e)
+	}
+	return log
+}
+
+//NewZapFileSugar ...
+func NewZapFileSugar(path ...string) *zap.SugaredLogger {
+	return NewZapFile(path...).Sugar()
 }
 
 var zapSugar *zap.SugaredLogger
