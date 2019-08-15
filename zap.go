@@ -49,11 +49,11 @@ func NewZapFile(path ...string) *zap.Logger {
 		p,
 	}
 
-	log, e := cfg.Build()
+	logger, e := cfg.Build()
 	if e != nil {
 		panic(e)
 	}
-	return log
+	return logger
 }
 
 //NewZapFileSugar ...
