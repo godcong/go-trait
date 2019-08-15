@@ -1,9 +1,13 @@
 package trait
 
 import (
+	"os"
+	"path/filepath"
+
 	"go.uber.org/zap"
 )
 
+// InitGlobalZapSugar ...
 func InitGlobalZapSugar() {
 	logger, e := zap.NewProduction(
 		zap.AddCaller(),
@@ -15,6 +19,7 @@ func InitGlobalZapSugar() {
 	zapSugar = logger.Sugar()
 }
 
+// NewZapSugar ...
 func NewZapSugar(f ...zap.Field) *zap.SugaredLogger {
 	logger, e := zap.NewProduction()
 	if e != nil {
@@ -23,12 +28,28 @@ func NewZapSugar(f ...zap.Field) *zap.SugaredLogger {
 	return logger.With(f...).Sugar()
 }
 
+// NewZap ...
 func NewZap() *zap.Logger {
 	logger, e := zap.NewProduction()
 	if e != nil {
 		panic(e)
 	}
 	return logger
+}
+
+// NewZapFile ...
+func NewZapFile(path ...string) (*zap.Logger, error) {
+	cfg := zap.NewProductionConfig()
+	p, _ := os.Getwd()
+	p = filepath.Join(p, "zap.log")
+	if path != nil {
+		p = path[0]
+	}
+	cfg.OutputPaths = []string{
+		p,
+	}
+
+	return cfg.Build()
 }
 
 var zapSugar *zap.SugaredLogger

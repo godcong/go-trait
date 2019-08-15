@@ -9,6 +9,7 @@ import (
 	"path"
 )
 
+// CompressToFile ...
 func CompressToFile(filename string, b []byte) error {
 	buff := bytes.NewBuffer(b)
 	file, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE, os.ModePerm)
@@ -26,6 +27,7 @@ func CompressToFile(filename string, b []byte) error {
 	return nil
 }
 
+// DecompressFromFile ...
 func DecompressFromFile(filename string) ([]byte, error) {
 	buff := bytes.Buffer{}
 	file, err := os.OpenFile(filename, os.O_RDWR, os.ModePerm)
@@ -43,6 +45,7 @@ func DecompressFromFile(filename string) ([]byte, error) {
 	return nil, err
 }
 
+// DecompressFromStatik ...
 func DecompressFromStatik(filename string) ([]byte, error) {
 	buff := bytes.Buffer{}
 	sfs, err := fs.New()

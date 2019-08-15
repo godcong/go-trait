@@ -2,17 +2,19 @@ package trait
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"time"
+
 	"github.com/godcong/elogrus"
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/olivere/elastic"
 	"github.com/pkg/errors"
 	"github.com/rifflock/lfshook"
 	log "github.com/sirupsen/logrus"
-	"os"
-	"path/filepath"
-	"time"
 )
 
+// ElasticLogOptions ...
 type ElasticLogOptions struct {
 	ReportCaller  bool
 	Formatter     log.Formatter
@@ -21,6 +23,7 @@ type ElasticLogOptions struct {
 	ClientOptions []elastic.ClientOptionFunc
 }
 
+// InitElasticLog ...
 func InitElasticLog(index string, opts ...ElasticLogOption) {
 	opt := newElasticLogOption(opts...)
 	client, err := elastic.NewClient(opt.ClientOptions...)
@@ -38,12 +41,14 @@ func InitElasticLog(index string, opts ...ElasticLogOption) {
 	log.SetFormatter(opt.Formatter)
 }
 
+// RotateLogOptions ...
 type RotateLogOptions struct {
 	Level        int           `json:"level"`
 	MaxAge       time.Duration `json:"max_age"`
 	RotationTime time.Duration `json:"rotation_time"`
 }
 
+// RotateLogAll ...
 const (
 	RotateLogAll = iota
 	RotateLogTrace
@@ -56,7 +61,7 @@ const (
 	RotateLogOff
 )
 
-// InitRotateLogger ...
+// InitRotateLog ...
 func InitRotateLog(logPath string, opts ...RotateLogOption) {
 	opt := newRotateLogOptions(opts...)
 	dir, filename := filepath.Split(logPath)
@@ -106,6 +111,7 @@ func InitRotateLog(logPath string, opts ...RotateLogOption) {
 	log.SetFormatter(&log.JSONFormatter{})
 }
 
+// NoOutput ...
 func NoOutput() {
 	src, err := os.OpenFile(os.DevNull, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
