@@ -1,9 +1,6 @@
 package trait
 
 import (
-	"os"
-	"path/filepath"
-
 	"go.uber.org/zap"
 )
 
@@ -40,11 +37,14 @@ func NewZap() *zap.Logger {
 // NewZapFile ...
 func NewZapFile(path ...string) *zap.Logger {
 	cfg := zap.NewProductionConfig()
-	p, _ := os.Getwd()
-	p = filepath.Join(p, "zap.log")
+	//p, _ := os.Getwd()
+	//p = filepath.Join(p, "zap.log")
+	p := "zap.log"
 	if path != nil {
 		p = path[0]
 	}
+	//os.OpenFile(p,os.O_APPEND|os.O_CREATE|os.O_RDWR|os.O_SYNC,os.ModePerm)
+
 	cfg.OutputPaths = []string{
 		p,
 	}
